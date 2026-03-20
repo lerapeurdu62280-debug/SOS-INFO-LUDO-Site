@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOS INFO LUDO — Technicien Informatique</title>
+<meta name="description" content="SOS INFO LUDO — Dépannage informatique, réparation PC, optimisation Windows. Intervention rapide. Appelez le 06.59.59.05.15">
+
+<style>
+  :root {
+    --bg: #07070F;
+    --panel: #0C0C1E;
+    --card: #10102A;
+    --accent: #00D4FF;
+    --accent2: #7B2FFF;
+    --accent3: #FF2F7B;
+    --green: #00FF88;
+    --warn: #FFB800;
+    --fg: #EEEEFF;
+    --fg2: #9090BB;
+    --fg3: #3A3A6A;
+    --border: #1E1E44;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── Fond animé ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 20%, #00D4FF08 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, #7B2FFF08 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(7,7,15,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    font-size: 1.2rem; font-weight: 800;
+    color: var(--accent); letter-spacing: 1px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--fg2); text-decoration: none;
+    font-size: 0.95rem; font-weight: 500;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #000; padding: 10px 24px; border-radius: 10px;
+    font-weight: 700; font-size: 0.9rem; text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .nav-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,212,255,0.3);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 80px 5% 60px;
+    position: relative;
+  }
+  .hero-content { max-width: 800px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--accent); padding: 6px 18px; border-radius: 50px;
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 24px;
+    animation: fadeInDown .6s ease;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900; line-height: 1.1;
+    margin-bottom: 20px;
+    animation: fadeInUp .7s ease .1s both;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    font-size: 1.2rem; color: var(--fg2);
+    max-width: 580px; margin: 0 auto 40px;
+    animation: fadeInUp .7s ease .2s both;
+  }
+  .hero-btns {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    animation: fadeInUp .7s ease .3s both;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #000; padding: 16px 36px; border-radius: 12px;
+    font-weight: 800; font-size: 1.05rem; text-decoration: none;
+    transition: all .3s; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0,212,255,0.35);
+  }
+  .btn-secondary {
+    background: transparent;
+    border: 2px solid var(--border);
+    color: var(--fg); padding: 14px 32px; border-radius: 12px;
+    font-weight: 600; font-size: 1rem; text-decoration: none;
+    transition: all .3s; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,212,255,0.05);
+  }
+
+  /* Téléphone héro */
+  .hero-phone {
+    margin-top: 50px; font-size: 1.4rem; font-weight: 700;
+    color: var(--green); letter-spacing: 2px;
+    animation: pulse 2s infinite;
+  }
+
+  /* Stats */
+  .hero-stats {
+    display: flex; gap: 40px; justify-content: center;
+    margin-top: 60px; flex-wrap: wrap;
+    animation: fadeInUp .7s ease .5s both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-size: 2rem; font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), var(--green));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat-lbl { font-size: 0.85rem; color: var(--fg2); }
+
+  /* ── SECTION COMMUNE ── */
+  section { padding: 100px 5%; }
+  .section-badge {
+    display: inline-block;
+    background: rgba(123,47,255,0.1);
+    border: 1px solid rgba(123,47,255,0.3);
+    color: var(--accent2); padding: 5px 16px; border-radius: 50px;
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 900; margin-bottom: 16px;
+  }
+  .section-sub {
+    color: var(--fg2); font-size: 1.1rem;
+    max-width: 600px; margin: 0 auto 60px;
+  }
+  .text-center { text-align: center; }
+
+  /* ── SERVICES ── */
+  #services { background: var(--panel); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px; margin-top: 20px;
+  }
+  .service-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px 28px;
+    transition: all .3s; cursor: default;
+    position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .3s;
+  }
+  .service-card:hover { transform: translateY(-6px); border-color: var(--accent2); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon {
+    font-size: 2.5rem; margin-bottom: 18px; display: block;
+  }
+  .service-card h3 {
+    font-size: 1.15rem; font-weight: 700; margin-bottom: 10px;
+    color: var(--fg);
+  }
+  .service-card p { color: var(--fg2); font-size: 0.95rem; line-height: 1.6; }
+  .service-price {
+    margin-top: 16px; font-weight: 800;
+    color: var(--green); font-size: 1rem;
+  }
+
+  /* ── OUTILS / APPS ── */
+  #apps { background: var(--bg); }
+  .apps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+  }
+  .app-card {
+    background: linear-gradient(135deg, var(--card), var(--panel));
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 36px 30px;
+    transition: all .3s;
+  }
+  .app-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,212,255,0.1);
+    border-color: var(--accent);
+  }
+  .app-icon {
+    font-size: 3rem; margin-bottom: 20px; display: block;
+  }
+  .app-card h3 {
+    font-size: 1.35rem; font-weight: 800; margin-bottom: 8px;
+  }
+  .app-version {
+    display: inline-block;
+    background: rgba(0,212,255,0.15); color: var(--accent);
+    padding: 3px 12px; border-radius: 20px;
+    font-size: 0.75rem; font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .app-card p { color: var(--fg2); font-size: 0.95rem; margin-bottom: 20px; }
+  .app-features { list-style: none; margin-bottom: 24px; }
+  .app-features li {
+    padding: 5px 0; color: var(--fg2); font-size: 0.9rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .app-features li::before { content: '✓'; color: var(--green); font-weight: 700; }
+  .app-btn {
+    display: inline-block;
+    background: var(--card);
+    border: 1px solid var(--accent);
+    color: var(--accent); padding: 12px 24px; border-radius: 10px;
+    font-weight: 700; font-size: 0.9rem; text-decoration: none;
+    transition: all .3s;
+  }
+  .app-btn:hover {
+    background: var(--accent);
+    color: #000;
+  }
+
+  /* ── POURQUOI NOUS ── */
+  #why { background: var(--panel); }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .why-card {
+    text-align: center; padding: 36px 24px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; transition: all .3s;
+  }
+  .why-card:hover {
+    border-color: var(--accent2);
+    transform: translateY(-4px);
+  }
+  .why-icon { font-size: 2.8rem; margin-bottom: 16px; }
+  .why-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+  .why-card p { color: var(--fg2); font-size: 0.9rem; }
+
+  /* ── TARIFS ── */
+  #tarifs { background: var(--bg); }
+  .tarifs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px; max-width: 1000px; margin: 0 auto;
+  }
+  .tarif-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 36px 28px; text-align: center;
+    transition: all .3s; position: relative; overflow: hidden;
+  }
+  .tarif-card.featured {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, #10102A, #181830);
+  }
+  .tarif-card.featured::before {
+    content: '⭐ POPULAIRE';
+    position: absolute; top: 16px; right: -28px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #000; font-size: 0.7rem; font-weight: 800;
+    padding: 4px 40px; transform: rotate(35deg);
+    letter-spacing: 1px;
+  }
+  .tarif-card:hover { transform: translateY(-6px); border-color: var(--accent2); }
+  .tarif-icon { font-size: 2.5rem; margin-bottom: 16px; }
+  .tarif-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
+  .tarif-price {
+    font-size: 2.5rem; font-weight: 900; margin: 16px 0 8px;
+    background: linear-gradient(135deg, var(--accent), var(--green));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .tarif-price span { font-size: 1rem; color: var(--fg2); }
+  .tarif-desc { color: var(--fg2); font-size: 0.9rem; margin-bottom: 20px; }
+  .tarif-list { list-style: none; text-align: left; margin-bottom: 28px; }
+  .tarif-list li {
+    padding: 6px 0; color: var(--fg2); font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tarif-list li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--panel); }
+  .contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px; align-items: start; max-width: 1000px; margin: 0 auto;
+  }
+  .contact-info h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 24px; }
+  .contact-item {
+    display: flex; gap: 16px; align-items: flex-start;
+    margin-bottom: 24px;
+  }
+  .contact-icon {
+    width: 48px; height: 48px; background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 12px; display: flex; align-items: center;
+    justify-content: center; font-size: 1.3rem; flex-shrink: 0;
+  }
+  .contact-text h4 { font-size: 0.85rem; color: var(--fg2); margin-bottom: 4px; }
+  .contact-text p { font-size: 1.05rem; font-weight: 600; }
+  .contact-text a { color: var(--accent); text-decoration: none; }
+
+  .contact-form { background: var(--card); border-radius: 20px; padding: 36px; }
+  .contact-form h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 24px; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 0.9rem; color: var(--fg2); margin-bottom: 8px; }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%; background: var(--card2);
+    border: 1px solid var(--border); color: var(--fg);
+    padding: 12px 16px; border-radius: 10px;
+    font-family: inherit; font-size: 1rem;
+    transition: border-color .2s; resize: vertical;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none; border-color: var(--accent);
+  }
+  .form-group textarea { min-height: 100px; }
+  .form-group select option { background: var(--panel); }
+  .form-submit {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #000; border: none; padding: 14px; border-radius: 12px;
+    font-size: 1rem; font-weight: 800; cursor: pointer;
+    transition: all .3s; letter-spacing: 0.5px;
+  }
+  .form-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,212,255,0.3);
+  }
+  #form-success {
+    display: none; text-align: center; padding: 20px;
+    color: var(--green); font-size: 1.1rem; font-weight: 700;
+  }
+
+  /* ── TÉMOIGNAGES ── */
+  #temoignages { background: var(--bg); }
+  .temoignages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .temoignage-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px; transition: all .3s;
+  }
+  .temoignage-card:hover { border-color: var(--accent2); }
+  .stars { color: #FFD700; font-size: 1.1rem; margin-bottom: 14px; }
+  .temoignage-text {
+    color: var(--fg2); font-size: 0.95rem; line-height: 1.7;
+    margin-bottom: 20px; font-style: italic;
+  }
+  .temoignage-author { display: flex; align-items: center; gap: 12px; }
+  .author-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 1.1rem; color: #000;
+  }
+  .author-name { font-weight: 700; font-size: 0.95rem; }
+  .author-city { font-size: 0.8rem; color: var(--fg3); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--nav, #050510);
+    border-top: 1px solid var(--border);
+    padding: 60px 5% 30px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px; margin-bottom: 48px;
+  }
+  .footer-brand h3 {
+    font-size: 1.2rem; font-weight: 800;
+    color: var(--accent); margin-bottom: 12px;
+  }
+  .footer-brand p { color: var(--fg2); font-size: 0.9rem; line-height: 1.7; }
+  .footer-col h4 {
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--fg2); margin-bottom: 16px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; }
+  .footer-col a {
+    color: var(--fg2); text-decoration: none; font-size: 0.9rem;
+    transition: color .2s;
+  }
+  .footer-col a:hover { color: var(--accent); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border); padding-top: 24px;
+    color: var(--fg3); font-size: 0.85rem;
+  }
+
+  /* ── FLOATING CTA ── */
+  .floating-cta {
+    position: fixed; bottom: 28px; right: 28px; z-index: 200;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #000; padding: 14px 22px; border-radius: 50px;
+    font-weight: 800; font-size: 0.9rem; text-decoration: none;
+    box-shadow: 0 8px 30px rgba(0,212,255,0.4);
+    transition: all .3s; display: flex; align-items: center; gap: 8px;
+    animation: bounce 3s infinite;
+  }
+  .floating-cta:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(0,212,255,0.5);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeInDown {
+    from { opacity:0; transform:translateY(-20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes fadeInUp {
+    from { opacity:0; transform:translateY(30px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; }
+    50% { opacity:.7; }
+  }
+  @keyframes bounce {
+    0%,100% { transform:translateY(0); }
+    50% { transform:translateY(-6px); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .contact-wrapper { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .hero h1 { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">⚡ SOS INFO LUDO</div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#apps">Outils</a></li>
+    <li><a href="#tarifs">Tarifs</a></li>
+    <li><a href="#temoignages">Avis</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="tel:0659590515" class="nav-cta">📞 06.59.59.05.15</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">⚡ Technicien Informatique Disponible</div>
+    <h1>Votre PC a un problème ?<br><span>On le règle vite.</span></h1>
+    <p>Dépannage, réparation, optimisation et sécurisation de votre ordinateur. Intervention rapide sur Auchy-les-Mines et environs.</p>
+    <div class="hero-btns">
+      <a href="tel:0659590515" class="btn-primary">📞 Appeler maintenant</a>
+      <a href="#services" class="btn-secondary">🔧 Voir les services</a>
+    </div>
+    <div class="hero-phone">📞 06.59.59.05.15</div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">500+</div><div class="stat-lbl">PCs réparés</div></div>
+      <div class="stat"><div class="stat-num">24h</div><div class="stat-lbl">Délai moyen</div></div>
+      <div class="stat"><div class="stat-num">98%</div><div class="stat-lbl">Clients satisfaits</div></div>
+      <div class="stat"><div class="stat-num">10+</div><div class="stat-lbl">Ans d'expérience</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="text-center">
+    <div class="section-badge">Nos Prestations</div>
+    <h2 class="section-title">Tous vos problèmes <span style="color:var(--accent)">résolus</span></h2>
+    <p class="section-sub">Du diagnostic à la réparation complète — un seul interlocuteur pour tous vos besoins informatiques.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">🔍</span>
+      <h3>Diagnostic informatique</h3>
+      <p>Identification précise de tous les problèmes matériels et logiciels. Rapport complet remis après intervention.</p>
+      <div class="service-price">À partir de 30 €</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🦠</span>
+      <h3>Suppression virus & malwares</h3>
+      <p>Nettoyage complet des virus, ransomwares, adwares et logiciels espions. Mise en place d'une protection durable.</p>
+      <div class="service-price">À partir de 45 €</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">💿</span>
+      <h3>Réinstallation Windows</h3>
+      <p>Réinstallation propre de Windows 10 ou 11 avec récupération de vos données et configuration complète.</p>
+      <div class="service-price">À partir de 60 €</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">💾</span>
+      <h3>Récupération de données</h3>
+      <p>Récupération de fichiers supprimés, disque dur défaillant ou clé USB corrompue.</p>
+      <div class="service-price">À partir de 80 €</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">⚡</span>
+      <h3>Optimisation & performances</h3>
+      <p>Nettoyage en profondeur, optimisation du démarrage et des performances pour redonner vie à votre PC.</p>
+      <div class="service-price">À partir de 35 €</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🔧</span>
+      <h3>Réparation matérielle</h3>
+      <p>Remplacement disque dur, SSD, RAM, ventilateur, écran. Nettoyage interne et remplacement pâte thermique.</p>
+      <div class="service-price">Sur devis</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🌐</span>
+      <h3>Configuration réseau</h3>
+      <p>Installation WiFi, configuration routeur, réseau domestique ou professionnel. Résolution des problèmes de connexion.</p>
+      <div class="service-price">À partir de 30 €</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📡</span>
+      <h3>Accès à distance</h3>
+      <p>Assistance rapide sans déplacement via AnyDesk. Idéal pour les pannes logicielles simples et urgentes.</p>
+      <div class="service-price">À partir de 25 €</div>
+    </div>
+  </div>
+</section>
+
+<!-- APPS -->
+<section id="apps">
+  <div class="text-center">
+    <div class="section-badge">Nos Logiciels</div>
+    <h2 class="section-title">Des outils <span style="color:var(--accent2)">professionnels</span> créés pour vous</h2>
+    <p class="section-sub">Des applications Python sur mesure — gratuites et téléchargeables sur GitHub.</p>
+  </div>
+  <div class="apps-grid">
+    <div class="app-card">
+      <span class="app-icon">⚡</span>
+      <div class="app-version">v3.0 — GRATUIT</div>
+      <h3>Windows Optimizer</h3>
+      <p>L'outil d'optimisation Windows tout-en-un. Interface moderne avec jauges animées, multilingue.</p>
+      <ul class="app-features">
+        <li>Jauges temps réel CPU/RAM/GPU/Disque</li>
+        <li>40+ tweaks Windows (vie privée, gaming...)</li>
+        <li>Nettoyage en profondeur (12 types)</li>
+        <li>Rapport PDF du PC exportable</li>
+        <li>Accès distant AnyDesk intégré</li>
+        <li>Compatible Windows 10 / 11</li>
+      </ul>
+      <a href="https://github.com/lerapeurdu62280-debug" class="app-btn" target="_blank">⬇️ Télécharger sur GitHub</a>
+    </div>
+    <div class="app-card">
+      <span class="app-icon">🔧</span>
+      <div class="app-version" style="background:rgba(255,107,0,0.15);color:#FF6B00">v1.0 — TECHNICIENS</div>
+      <h3>Toolkit Technicien</h3>
+      <p>La boîte à outils du technicien professionnel. Inspiré de MediCat, modernisé Python.</p>
+      <ul class="app-features">
+        <li>Création clé USB bootable (Rufus + catalogue ISOs)</li>
+        <li>Diagnostic & réparation Windows (SFC, DISM...)</li>
+        <li>Récupération de données (Recuva, TestDisk...)</li>
+        <li>Gestion drivers & Windows Update</li>
+        <li>Journal d'interventions + rapport PDF client</li>
+        <li>Test de vitesse réseau + Mots de passe WiFi</li>
+      </ul>
+      <a href="https://github.com/lerapeurdu62280-debug" class="app-btn" style="border-color:#FF6B00;color:#FF6B00" target="_blank">⬇️ Télécharger sur GitHub</a>
+    </div>
+    <div class="app-card">
+      <span class="app-icon">🛡️</span>
+      <div class="app-version" style="background:rgba(255,51,102,0.15);color:#FF3366">v1.0 — SÉCURITÉ</div>
+      <h3>Malware Scanner</h3>
+      <p>Détection et suppression des malwares, adwares et programmes suspects.</p>
+      <ul class="app-features">
+        <li>Scan processus, registre, fichiers, réseau</li>
+        <li>Détection adwares au démarrage</li>
+        <li>Quarantaine avec restauration possible</li>
+        <li>Intégration VirusTotal</li>
+        <li>Rapport de scan exportable</li>
+      </ul>
+      <a href="https://github.com/lerapeurdu62280-debug" class="app-btn" style="border-color:#FF3366;color:#FF3366" target="_blank">⬇️ Télécharger sur GitHub</a>
+    </div>
+    <div class="app-card">
+      <span class="app-icon">💰</span>
+      <div class="app-version" style="background:rgba(46,204,113,0.15);color:#2ECC71">v1.0 — FACTURATION</div>
+      <h3>Système de Facturation</h3>
+      <p>Gestion complète de votre activité de technicien — clients, devis, factures, PDF.</p>
+      <ul class="app-features">
+        <li>Gestion clients avec fiche complète</li>
+        <li>Création factures & devis PDF pro</li>
+        <li>Catalogue 16 prestations prédéfinies</li>
+        <li>Statistiques CA par mois et top clients</li>
+        <li>Export CSV pour comptable</li>
+      </ul>
+      <a href="https://github.com/lerapeurdu62280-debug" class="app-btn" style="border-color:#2ECC71;color:#2ECC71" target="_blank">⬇️ Télécharger sur GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- POURQUOI NOUS -->
+<section id="why" style="background:var(--panel)">
+  <div class="text-center">
+    <div class="section-badge">Nos Atouts</div>
+    <h2 class="section-title">Pourquoi choisir <span style="color:var(--accent)">SOS INFO LUDO</span> ?</h2>
+  </div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">⚡</div>
+      <h3>Intervention rapide</h3>
+      <p>Sous 24h en général, parfois le jour même pour les urgences.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">💰</div>
+      <h3>Tarifs transparents</h3>
+      <p>Devis gratuit avant toute intervention. Pas de mauvaise surprise.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🏠</div>
+      <h3>Déplacement à domicile</h3>
+      <p>Je me déplace chez vous sur Auchy-les-Mines et les communes voisines.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">📡</div>
+      <h3>Accès à distance</h3>
+      <p>Résolution rapide à distance via AnyDesk pour éviter les déplacements.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🎓</div>
+      <h3>Explication claire</h3>
+      <p>Je vous explique ce qui a été fait, en termes simples et compréhensibles.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🛡️</div>
+      <h3>Garantie satisfaction</h3>
+      <p>Si le problème revient dans les 7 jours, je reviens gratuitement.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFS -->
+<section id="tarifs">
+  <div class="text-center">
+    <div class="section-badge">Tarifs</div>
+    <h2 class="section-title">Des prix <span style="color:var(--green)">clairs</span> et honnêtes</h2>
+    <p class="section-sub">Devis gratuit et sans engagement. Les tarifs indiqués sont à titre indicatif.</p>
+  </div>
+  <div class="tarifs-grid">
+    <div class="tarif-card">
+      <div class="tarif-icon">🔍</div>
+      <h3>Diagnostic</h3>
+      <div class="tarif-price">30 <span>€</span></div>
+      <div class="tarif-desc">Identification du problème</div>
+      <ul class="tarif-list">
+        <li>Analyse complète du PC</li>
+        <li>Rapport de diagnostic</li>
+        <li>Conseils personnalisés</li>
+        <li>Offert si réparation</li>
+      </ul>
+      <a href="tel:0659590515" class="app-btn" style="display:block;text-align:center">Prendre RDV</a>
+    </div>
+    <div class="tarif-card featured">
+      <div class="tarif-icon">🛠️</div>
+      <h3>Réparation complète</h3>
+      <div class="tarif-price">60 <span>€</span></div>
+      <div class="tarif-desc">Remise en état totale</div>
+      <ul class="tarif-list">
+        <li>Diagnostic inclus</li>
+        <li>Suppression virus</li>
+        <li>Nettoyage & optimisation</li>
+        <li>Mise à jour système</li>
+        <li>Garantie 7 jours</li>
+      </ul>
+      <a href="tel:0659590515" class="app-btn" style="display:block;text-align:center;background:var(--accent);color:#000;border:none">📞 Appeler</a>
+    </div>
+    <div class="tarif-card">
+      <div class="tarif-icon">💿</div>
+      <h3>Réinstallation Windows</h3>
+      <div class="tarif-price">65 <span>€</span></div>
+      <div class="tarif-desc">Repartir sur une base propre</div>
+      <ul class="tarif-list">
+        <li>Sauvegarde de vos données</li>
+        <li>Installation Windows propre</li>
+        <li>Installation logiciels essentiels</li>
+        <li>Configuration personnalisée</li>
+      </ul>
+      <a href="tel:0659590515" class="app-btn" style="display:block;text-align:center">Prendre RDV</a>
+    </div>
+  </div>
+</section>
+
+<!-- TÉMOIGNAGES -->
+<section id="temoignages" style="background:var(--panel)">
+  <div class="text-center">
+    <div class="section-badge">Avis clients</div>
+    <h2 class="section-title">Ce que disent <span style="color:var(--accent)">nos clients</span></h2>
+  </div>
+  <div class="temoignages-grid">
+    <div class="temoignage-card">
+      <div class="stars">★★★★★</div>
+      <p class="temoignage-text">"Mon PC était complètement bloqué par des virus. Intervention rapide, professionnel et prix honnête. Je recommande vivement !"</p>
+      <div class="temoignage-author">
+        <div class="author-avatar">M</div>
+        <div><div class="author-name">Marie D.</div><div class="author-city">Auchy-les-Mines</div></div>
+      </div>
+    </div>
+    <div class="temoignage-card">
+      <div class="stars">★★★★★</div>
+      <p class="temoignage-text">"Récupération de mes photos de famille que je croyais perdues à jamais. Miracle ! Très compétent, explique tout clairement."</p>
+      <div class="temoignage-author">
+        <div class="author-avatar">P</div>
+        <div><div class="author-name">Pierre L.</div><div class="author-city">Noeux-les-Mines</div></div>
+      </div>
+    </div>
+    <div class="temoignage-card">
+      <div class="stars">★★★★★</div>
+      <p class="temoignage-text">"PC ultra lent depuis des mois. Après une heure d'intervention à distance, il démarre en 15 secondes. Bluffant !"</p>
+      <div class="temoignage-author">
+        <div class="author-avatar">S</div>
+        <div><div class="author-name">Sophie R.</div><div class="author-city">Béthune</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="text-center">
+    <div class="section-badge">Contact</div>
+    <h2 class="section-title">Contactez-nous</h2>
+    <p class="section-sub">Réponse sous 2h en journée. Urgences traitées en priorité.</p>
+  </div>
+  <div class="contact-wrapper">
+    <div class="contact-info">
+      <h3>Informations de contact</h3>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div class="contact-text">
+          <h4>Téléphone</h4>
+          <p><a href="tel:0659590515">06.59.59.05.15</a></p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div class="contact-text">
+          <h4>Zone d'intervention</h4>
+          <p>Auchy-les-Mines et environs<br>Déplacement + accès à distance</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">⏰</div>
+        <div class="contact-text">
+          <h4>Disponibilité</h4>
+          <p>Lun–Sam : 9h – 19h<br>Urgences sur appel</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🐙</div>
+        <div class="contact-text">
+          <h4>GitHub</h4>
+          <p><a href="https://github.com/lerapeurdu62280-debug" target="_blank">lerapeurdu62280-debug</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <h3>✉️ Envoyer un message</h3>
+      <form id="contactForm" onsubmit="submitForm(event)">
+        <div class="form-group">
+          <label>Votre nom *</label>
+          <input type="text" placeholder="Dupont Jean" required>
+        </div>
+        <div class="form-group">
+          <label>Téléphone *</label>
+          <input type="tel" placeholder="06 XX XX XX XX" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="vous@email.com">
+        </div>
+        <div class="form-group">
+          <label>Type de problème</label>
+          <select>
+            <option>Sélectionnez...</option>
+            <option>PC lent / bloqué</option>
+            <option>Virus / malware</option>
+            <option>Récupération de données</option>
+            <option>Réinstallation Windows</option>
+            <option>Problème réseau / WiFi</option>
+            <option>Panne matérielle</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Description du problème</label>
+          <textarea placeholder="Décrivez votre problème en quelques mots..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">🚀 Envoyer ma demande</button>
+        <div id="form-success">✅ Message envoyé ! Je vous contacte très rapidement.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>⚡ SOS INFO LUDO</h3>
+      <p>Technicien informatique indépendant spécialisé dans le dépannage, la réparation et l'optimisation de PC Windows. Disponible sur Auchy-les-Mines et les communes environnantes.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Diagnostic</a></li>
+        <li><a href="#services">Suppression virus</a></li>
+        <li><a href="#services">Réinstallation Windows</a></li>
+        <li><a href="#services">Récupération données</a></li>
+        <li><a href="#services">Réseau & WiFi</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Logiciels</h4>
+      <ul>
+        <li><a href="#apps">Windows Optimizer</a></li>
+        <li><a href="#apps">Toolkit Technicien</a></li>
+        <li><a href="#apps">Malware Scanner</a></li>
+        <li><a href="#apps">Facturation</a></li>
+        <li><a href="https://github.com/lerapeurdu62280-debug" target="_blank">GitHub →</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:0659590515">📞 06.59.59.05.15</a></li>
+        <li><a href="#contact">✉️ Formulaire</a></li>
+        <li><a href="https://github.com/lerapeurdu62280-debug" target="_blank">🐙 GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 SOS INFO LUDO — Technicien informatique indépendant</span>
+    <span>Auchy-les-Mines, Hauts-de-France</span>
+  </div>
+</footer>
+
+<!-- FLOATING CTA -->
+<a href="tel:0659590515" class="floating-cta">📞 Appeler maintenant</a>
+
+<script>
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('contactForm').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+  // En production : remplacer par un vrai envoi (Formspree, EmailJS...)
+}
+
+// Animation au scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.service-card, .app-card, .why-card, .tarif-card, .temoignage-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+
+// Compteur animé
+function animateCounter(el, target) {
+  let current = 0;
+  const step = target / 60;
+  const timer = setInterval(() => {
+    current += step;
+    if (current >= target) { el.textContent = target + (el.dataset.suffix || ''); clearInterval(timer); }
+    else el.textContent = Math.floor(current) + (el.dataset.suffix || '');
+  }, 20);
+}
+</script>
+
+</body>
+</html>
